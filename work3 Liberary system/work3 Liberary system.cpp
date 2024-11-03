@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <list>
+#include <forward_list>
 #include <string>
 #include <cstdlib>
 #include <map>
@@ -35,7 +36,7 @@ void addBook(list<Book>& books, const string& title, const string& writer, const
     books.push_back({ title, writer, id });
 }
 
-void removeBook(list<Book>& books, list<Reader>& readers, const string& id) {
+void removeBook(list<Book>& books, forward_list<Reader>& readers, const string& id) {
     // 刪除書籍
     books.remove_if([&id](const Book& book) { return book.id == id; });
 
@@ -43,7 +44,9 @@ void removeBook(list<Book>& books, list<Reader>& readers, const string& id) {
     readers.remove_if([&id](const Reader& reader) { return reader.id == id; });
 }
 
-void Booksystem(list<Book>& books, list<Reader>& readers) {   // 書籍管理系統
+
+
+void Booksystem(list<Book>& books, forward_list<Reader>& readers) {   // 書籍管理系統
     int choice;
     while (true) {
         system("CLS");
@@ -87,7 +90,7 @@ void Booksystem(list<Book>& books, list<Reader>& readers) {   // 書籍管理系
             }
             else {
                 removeBook(books, readers, id);
-				cout << "刪除成功" << endl;
+                cout << "刪除成功" << endl;
             }
             break;
         }
@@ -143,18 +146,22 @@ void Booksystem(list<Book>& books, list<Reader>& readers) {   // 書籍管理系
     }
 }
 
-void pipi(list<Reader>& readers) {   // 初始化借閱者
-    readers.push_back({ "小明", "A1234" });
-    readers.push_back({ "小明", "B2345" });
-    readers.push_back({ "小華", "C4567" });
-    readers.push_back({ "小美", "D6789" });
-    readers.push_back({ "小美", "E8901" });
-    readers.push_back({ "小強", "F0123" });
-    readers.push_back({ "小麗", "B3456" });
-    readers.push_back({ "小麗", "C5678" });
-}
 
-void addReader(list<Reader>& readers, const string& name, const string& id, const list<Book>& books) {
+#include <forward_list>
+
+// 修改 pipi 函數
+void pipi(forward_list<Reader>& readers) {   // 初始化借閱者
+    readers.push_front({ "小明", "A1234" });
+    readers.push_front({ "小明", "B2345" });
+    readers.push_front({ "小華", "C4567" });
+    readers.push_front({ "小美", "D6789" });
+    readers.push_front({ "小美", "E8901" });
+    readers.push_front({ "小強", "F0123" });
+    readers.push_front({ "小麗", "B3456" });
+    readers.push_front({ "小麗", "C5678" });
+}
+// 修改 addReader 函數
+void addReader(forward_list<Reader>& readers, const string& name, const string& id, const list<Book>& books) {
     // 檢查書籍是否存在於圖書系統中
     auto bookIt = find_if(books.begin(), books.end(), [&id](const Book& book) { return book.id == id; });
     if (bookIt == books.end()) {
@@ -168,11 +175,12 @@ void addReader(list<Reader>& readers, const string& name, const string& id, cons
         cout << "此書已被借出" << endl;
         return;
     }
-	//若以上都沒有問題，則新增借閱者
-    readers.push_back({ name, id });
+    //若以上都沒有問題，則新增借閱者
+    readers.push_front({ name, id });
 }
 
-void ReaderSystem(const list<Book>& books, list<Reader>& readers) {   // 借閱者管理系統
+// 修改 ReaderSystem 函數
+void ReaderSystem(const list<Book>& books, forward_list<Reader>& readers) {   // 借閱者管理系統
     int choice;
 
     while (true) {
@@ -215,7 +223,7 @@ void ReaderSystem(const list<Book>& books, list<Reader>& readers) {   // 借閱�
             }
             else {
                 readers.remove_if([&name](const Reader& reader) { return reader.name == name; });
-				cout << "刪除成功" << endl;
+                cout << "刪除成功" << endl;
             }
             break;
         }
@@ -284,10 +292,11 @@ void ReaderSystem(const list<Book>& books, list<Reader>& readers) {   // 借閱�
     }
 }
 
+
 int main() {
     int choice;
     list<Book> books;
-    list<Reader> readers;
+    forward_list<Reader> readers; // 修改這一行
     ubiubi(books);
     pipi(readers);
     while (true) {
@@ -303,7 +312,6 @@ int main() {
             system("pause");
             continue;
         }
-
         if (choice == 1) {
             Booksystem(books, readers);
         }
