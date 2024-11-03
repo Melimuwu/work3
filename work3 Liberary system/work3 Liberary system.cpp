@@ -295,8 +295,8 @@ void ReaderSystem(const list<Book>& books, forward_list<Reader>& readers) {   //
 
 int main() {
     int choice;
-    list<Book> books;
-    forward_list<Reader> readers; // 修改這一行
+    list<Book> books;               //圖書管理系統使用list
+    forward_list<Reader> readers;   //借閱者系統使用forward_list
     ubiubi(books);
     pipi(readers);
     while (true) {
